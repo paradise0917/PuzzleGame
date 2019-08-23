@@ -8,7 +8,7 @@ const Navbar = () => {
             <div className="flex flex-jus-center flex-ali-center title" >Puzzle Game</div>
                 <ul className="flex flex-child-align-self-end flex-ali-center link">
                     <li><Link to="/">Game</Link></li>
-                    <li><Link to="/rank">Rank</Link></li>
+                    <li><Link to="/ranking">Ranking List</Link></li>
                 </ul>
         </React.Fragment>;
     return <div className="navbar flex flex-jus-space-btw">{navbar}</div>;

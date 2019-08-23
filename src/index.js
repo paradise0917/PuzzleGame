@@ -3,12 +3,9 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Router, Route, Switch } from "react-router-dom";
 import history from './history'
 
-
 import Navbar from "./Navbar/index.js";
-// import {Info, Step} from "./Info/index.js";
 import Game from "./Game/index.js";
 import Rank from "./Rank/index.js";
-
 
 import "./common.css";
 import "./index.css";
@@ -55,16 +52,18 @@ class App extends React.Component {
    }
 
     startGame(userName){
-        this.setState({ start: true, userName: userName, useStep: 0});
-        this.randomOrder();
-        this.getLocalStorageToState();
+        if(userName.trim()!==""){
+            this.setState({ start: true, userName: userName, useStep: 0});
+            this.randomOrder();
+            this.getLocalStorageToState();
+        }
     }
 
     endGame(){
-        this.state.ranklist.push({name: this.state.userName, step: this.state.useStep});
+        this.state.ranklist.push({name: this.state.userName, step: this.state.useStep + 1});
         this.setState({ start: false, ranklist: this.state.ranklist });
         this.setLocalStorageFromState();
-        history.push('/rank');
+        history.push('/ranking'); // redirect to ranking list page
     }
 
     randomOrder(){
@@ -100,7 +99,6 @@ class App extends React.Component {
             this.state.tileArray[itemIndex].value = 9;
 
             // Update State
-            // console.log(this.state.tileArray);
             this.setState({ tileArray: this.state.tileArray, useStep: (this.state.useStep + 1) });
 
             // check win
@@ -179,10 +177,6 @@ class App extends React.Component {
         localStorage.setItem("rank", JSON.stringify(this.state.ranklist));
     }
 
-    setRankInfo(){
-
-    }
-
     render(){
         return(
             <React.Fragment>
@@ -198,7 +192,7 @@ class App extends React.Component {
                                                                 userName={this.state.userName} 
                                                                 useStep={this.state.useStep}
                                                                 />} />   
-                        <Route path="/rank" render={() => <Rank ranklist={this.state.ranklist} getLocalStorageToState={this.getLocalStorageToState} />}/>   
+                        <Route path="/ranking" render={() => <Rank ranklist={this.state.ranklist} getLocalStorageToState={this.getLocalStorageToState} />}/>   
                     </Switch>
                 </Router>
             </React.Fragment>
