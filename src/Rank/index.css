@@ -1,0 +1,14 @@
+.rank{
+    width: 450px;
+}
+
+.rank .title{
+    margin: 10px 0px; 
+    border-bottom: solid 1px #ccc;
+}
+
+.rank .row span{
+    width: 33%; padding: 10px;
+    box-sizing: border-box;
+    display: inline-block;
+}

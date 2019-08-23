@@ -1,10 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Redirect } from "react-router-dom";
+
 
 import Navbar from "./Navbar/index.js";
+// import {Info, Step} from "./Info/index.js";
 import Game from "./Game/index.js";
 import Rank from "./Rank/index.js";
+
 
 import "./common.css";
 import "./index.css";
@@ -16,7 +19,7 @@ class App extends React.Component {
         super(props);
         this.state = { 
             size: 3,
-            tileArray :[
+            tileArray: [
                 {row:0 , col:0 , value:1},
                 {row:0 , col:1 , value:2},
                 {row:0 , col:2 , value:3},
@@ -26,21 +29,62 @@ class App extends React.Component {
                 {row:2 , col:0 , value:7},
                 {row:2 , col:1 , value:8},
                 {row:2 , col:2 , value:9}
-            ]
+            ],
+            ranklist: [],
+            start: false,
+            userName: "",
+            useStep: 0
         };
-        // this.changeCategory = this.changeCategory.bind(this);
-        // this.changeStatus = this.changeStatus.bind(this);
-        // this.addTask = this.addTask.bind(this);
-        // this.showAddTask = this.showAddTask.bind(this);
+
+        this.startGame = this.startGame.bind(this);
+        this.endGame = this.endGame.bind(this);
+        this.randomOrder = this.randomOrder.bind(this);
         this.checkCanSlack = this.checkCanSlack.bind(this);
         this.checkTop = this.checkTop.bind(this);
         this.checkRight = this.checkRight.bind(this);
         this.checkBottom = this.checkBottom.bind(this);
         this.checkLeft = this.checkLeft.bind(this);
+        this.checkWin = this.checkWin.bind(this);
+        this.getLocalStorageToState = this.getLocalStorageToState.bind(this);
+        this.setLocalStorageFromState = this.setLocalStorageFromState.bind(this);
+    }
+
+    componentDidMount() {
+        this.getLocalStorageToState();
+
+        // const PrivateRoute =  this.state.completeGame ? <Route { ...props } />: <Redirect to="/login" />
+    }
+
+    startGame(userName){
+        this.setState({ start: true, userName: userName, useStep: 0});
+        this.randomOrder();
+        this.getLocalStorageToState();
+    }
+
+    endGame(){
+        this.state.ranklist.push({name: this.state.userName, step: this.state.useStep});
+        this.setState({ start: false, ranklist: this.state.ranklist });
+        this.setLocalStorageFromState();
+    }
+
+    randomOrder(){
+        let randomArray = [];
+        // for(let i=1; i <= this.state.size * this.state.size; i++)
+        //     randomArray.push(i);
+        // randomArray.sort(() => Math.random() - 0.5);
+        randomArray = [1,2,3,4,5,9,7,8,6];
+
+        this.state.tileArray.forEach(item => {
+            item.value = randomArray[0];
+            randomArray.shift();
+        });
+
+        // Update State
+        // console.log(this.state.tileArray);
+        this.setState({ tileArray: this.state.tileArray });
     }
 
     checkCanSlack(clickitem){
-        console.log(clickitem);
         const checkTopResult = this.checkTop(clickitem.row, clickitem.col);
         const checkRightResult = this.checkRight(clickitem.row, clickitem.col);
         const checkBottomResult = this.checkBottom(clickitem.row, clickitem.col);
@@ -56,8 +100,14 @@ class App extends React.Component {
             this.state.tileArray[itemIndex].value = 9;
 
             // Update State
-            console.log(this.state.tileArray);
-            this.setState({ tileArray: this.state.tileArray });
+            // console.log(this.state.tileArray);
+            this.setState({ tileArray: this.state.tileArray, useStep: (this.state.useStep + 1) });
+
+            // check win
+            if(this.checkWin()){
+                alert(this.state.userName + ", you win ٩(^ᴗ^)۶");
+                this.endGame();
+            }
         }
 
     }
@@ -106,13 +156,48 @@ class App extends React.Component {
         return false;
     }
 
+    checkWin(){
+        for(let i=0; i < this.state.size * this.state.size; i++){
+            if(this.state.tileArray[i].value !== i+1){
+                return false;
+            }
+        }
+       return true;
+    }
+
+    getLocalStorageToState(){
+        let data = localStorage.getItem("rank");
+        if(data !== null){
+            this.setState({ ranklist: JSON.parse(data)});
+        }
+        else{
+            this.setState({ ranklist: []});
+        }
+    }
+
+    setLocalStorageFromState(){
+        localStorage.setItem("rank", JSON.stringify(this.state.ranklist));
+    }
+
+    setRankInfo(){
+
+    }
+
     render(){
         return(
             <React.Fragment>
                 <BrowserRouter>
                     <Navbar />
-                    <Route path="/" exact render={() => <Game size={this.state.size} tileArray={this.state.tileArray} checkCanSlack={this.checkCanSlack} />} />   
-                    <Route path="/rank" render={() => <Rank />}/>   
+                    <Route path="/" exact render={() => <Game 
+                                                            size={this.state.size} 
+                                                            tileArray={this.state.tileArray} 
+                                                            checkCanSlack={this.checkCanSlack}
+                                                            start={this.state.start}
+                                                            startGame={this.startGame}
+                                                            userName={this.state.userName} 
+                                                            useStep={this.state.useStep}
+                                                             />} />   
+                    <Route path="/rank" render={() => <Rank ranklist={this.state.ranklist} getLocalStorageToState={this.getLocalStorageToState} />}/>   
                 </BrowserRouter>
             </React.Fragment>
         );

@@ -23,3 +23,10 @@
     align-items: center;
 }
 
+.outer{
+    width: 100%;
+}
+
+.ishidden{
+    display: none;
+}

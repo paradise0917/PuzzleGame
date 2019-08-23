@@ -1,21 +1,3 @@
-.panel{
-    border:solid 1px #ccc;
-    width: 450px; height: 450px;
-    box-sizing: content-box;
-}
-
-.panel .tile{
-    width: 148px;
-    height: 148px;
-    border:solid 1px #ccc;
-    background-color: #eee;
-}
-
-.panel .tile-empty{
-    background-color: #fff;
-    border:solid 1px transparent;
-}
-
 .userInfo{
     margin: 20px 0px;
 }
