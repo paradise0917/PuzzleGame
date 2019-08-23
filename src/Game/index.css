@@ -4,12 +4,18 @@
 }
 .panel{
     border:solid 1px #ccc;
-    width: 500px; height: 500px;
+    width: 450px; height: 450px;
     box-sizing: content-box;
 }
 
 .panel .tile{
-    width: calc(500px / 3 - 2px);
-    height: calc(500px / 3 - 2px);
+    width: 148px;
+    height: 148px;
     border:solid 1px #ccc;
+    background-color: #eee;
+}
+
+.panel .tile-empty{
+    background-color: #fff;
+    border:solid 1px transparent;
 }
