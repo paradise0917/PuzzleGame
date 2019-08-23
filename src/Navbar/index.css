@@ -16,6 +16,7 @@
     margin: 0px 15px; font-weight: 500;
     cursor: pointer;
     transition: color 0.3s linear;
+    color: rgba(0, 0, 0, 0.8);
 }
 .navbar .link li:hover{
     color: black;
