@@ -1,0 +1,21 @@
+
+.flex{
+    display: flex;
+}
+
+.flex-flow-col{
+    flex-flow: column;
+}
+
+.flex-jus-center{
+    justify-content: center;
+}
+
+.flex-jus-space-btw{
+    justify-content: space-between;
+}
+
+.flex-ali-center{
+    align-items: center;
+}
+

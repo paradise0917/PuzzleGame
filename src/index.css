@@ -1,0 +1,19 @@
+
+html, body{
+    margin: 0;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.8);
+    font-family: "微軟正黑體", "sans-serif"; font-size: 1rem;
+}
+
+body{
+    padding: 80px 0px;
+}
+
+a{
+    text-decoration:none;
+}        
+a:visited {color:inherit;} 
+a:hover {color:inherit;}   
+a:active {color:inherit;} 

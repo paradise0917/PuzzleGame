@@ -1,0 +1,22 @@
+.navbar{
+    background-color: #fff;
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+    padding: 0px 20px; height: 60px; width: 100%;
+    position: fixed; top: 0px;
+}
+
+.navbar .title{
+    width: 120px;
+    font-weight: bolder; 
+}
+.navbar .link{
+    list-style-type: none; width: 350px;
+}
+.navbar .link li{
+    margin: 0px 15px; font-weight: 500;
+    cursor: pointer;
+    transition: color 0.3s linear;
+}
+.navbar .link li:hover{
+    color: black;
+}
