@@ -68,10 +68,10 @@ class App extends React.Component {
 
     randomOrder(){
         let randomArray = [];
-        // for(let i=1; i <= this.state.size * this.state.size; i++)
-        //     randomArray.push(i);
-        // randomArray.sort(() => Math.random() - 0.5);
-        randomArray = [1,2,3,4,5,9,7,8,6];
+        for(let i=1; i <= this.state.size * this.state.size; i++)
+            randomArray.push(i);
+        randomArray.sort(() => Math.random() - 0.5);
+        // randomArray = [1,2,3,4,5,9,7,8,6]; // test array
 
         this.state.tileArray.forEach(item => {
             item.value = randomArray[0];
@@ -84,6 +84,8 @@ class App extends React.Component {
     }
 
     checkCanSlack(clickitem){
+
+        // check can move
         const checkTopResult = this.checkTop(clickitem.row, clickitem.col);
         const checkRightResult = this.checkRight(clickitem.row, clickitem.col);
         const checkBottomResult = this.checkBottom(clickitem.row, clickitem.col);
