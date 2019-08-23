@@ -24,4 +24,4 @@ const Step = (props) => {
     return <div className="outer flex flex-jus-center flex-ali-center">{step}</div>;
 }
 
-export { Info, Step};
+export {Info, Step};

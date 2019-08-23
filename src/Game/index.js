@@ -18,9 +18,9 @@ const Info = (props) => {
 }
 
 const Step = (props) => {
-    const step = <div className={props.start ? "" : "ishidden"}>
-            <span>Name:{props.userName}</span> / 
-            <span> Step:{props.useStep}</span>
+    const step = <div className={props.start ? "title flex flex-jus-space-btw" : "ishidden"}>
+            <span>Name : {props.userName}</span>
+            <span>Step : {props.useStep}</span>
         </div>;
     return <div className="outer flex flex-jus-center flex-ali-center">{step}</div>;
 }
@@ -29,7 +29,7 @@ const Step = (props) => {
 const Game = (props) => {
 
     const showtile = (item) => {
-        return <div key={item.value} onClick={props.start ? () => {props.checkCanSlack(item);} : ()=>{console.log("Please enter your name first.")}} className="tile flex flex-jus-center flex-ali-center">
+        return <div key={item.value} onClick={props.start ? () => {props.checkCanSlack(item);} : ()=>{alert("Please enter your name first.")}} className="tile flex flex-jus-center flex-ali-center">
             <span>{item.value}</span>
         </div>};
 

@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Router, Route, Switch } from "react-router-dom";
+import history from './history'
 
 
 import Navbar from "./Navbar/index.js";
@@ -51,9 +52,7 @@ class App extends React.Component {
 
     componentDidMount() {
         this.getLocalStorageToState();
-
-        // const PrivateRoute =  this.state.completeGame ? <Route { ...props } />: <Redirect to="/login" />
-    }
+   }
 
     startGame(userName){
         this.setState({ start: true, userName: userName, useStep: 0});
@@ -65,6 +64,7 @@ class App extends React.Component {
         this.state.ranklist.push({name: this.state.userName, step: this.state.useStep});
         this.setState({ start: false, ranklist: this.state.ranklist });
         this.setLocalStorageFromState();
+        history.push('/rank');
     }
 
     randomOrder(){
@@ -186,19 +186,21 @@ class App extends React.Component {
     render(){
         return(
             <React.Fragment>
-                <BrowserRouter>
+                <Router history={history}>
                     <Navbar />
-                    <Route path="/" exact render={() => <Game 
-                                                            size={this.state.size} 
-                                                            tileArray={this.state.tileArray} 
-                                                            checkCanSlack={this.checkCanSlack}
-                                                            start={this.state.start}
-                                                            startGame={this.startGame}
-                                                            userName={this.state.userName} 
-                                                            useStep={this.state.useStep}
-                                                             />} />   
-                    <Route path="/rank" render={() => <Rank ranklist={this.state.ranklist} getLocalStorageToState={this.getLocalStorageToState} />}/>   
-                </BrowserRouter>
+                    <Switch>
+                        <Route path="/" exact render={() => <Game 
+                                                                size={this.state.size} 
+                                                                tileArray={this.state.tileArray} 
+                                                                checkCanSlack={this.checkCanSlack}
+                                                                start={this.state.start}
+                                                                startGame={this.startGame}
+                                                                userName={this.state.userName} 
+                                                                useStep={this.state.useStep}
+                                                                />} />   
+                        <Route path="/rank" render={() => <Rank ranklist={this.state.ranklist} getLocalStorageToState={this.getLocalStorageToState} />}/>   
+                    </Switch>
+                </Router>
             </React.Fragment>
         );
     }
