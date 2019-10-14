@@ -60,7 +60,7 @@ class App extends React.Component {
     }
 
     endGame(){
-        this.state.ranklist.push({name: this.state.userName, step: this.state.useStep + 1});
+        this.state.ranklist.push({name: this.state.userName, step: this.state.useStep});
         this.setState({ start: false, ranklist: this.state.ranklist });
         this.setLocalStorageFromState();
         history.push('/ranking'); // redirect to ranking list page
@@ -68,19 +68,19 @@ class App extends React.Component {
 
     randomOrder(){
         let randomArray = [];
-        for(let i=1; i <= this.state.size * this.state.size; i++)
-            randomArray.push(i);
-        randomArray.sort(() => Math.random() - 0.5);
-        // randomArray = [1,2,3,4,5,9,7,8,6]; // test array
-
-        this.state.tileArray.forEach(item => {
-            item.value = randomArray[0];
-            randomArray.shift();
-        });
+        // for(let i=1; i <= this.state.size * this.state.size; i++)
+        //     randomArray.push(i);
+        // randomArray.sort(() => Math.random() - 0.5);
+        randomArray = [1,2,3,4,5,9,7,8,6]; // test array
 
         // Update State
         // console.log(this.state.tileArray);
-        this.setState({ tileArray: this.state.tileArray });
+        this.setState((prestate)=> {
+            prestate.tileArray.forEach(item => {
+                item.value = randomArray[0];
+                randomArray.shift();
+            });
+        });
     }
 
     checkCanSlack(clickitem){
@@ -90,25 +90,35 @@ class App extends React.Component {
         const checkRightResult = this.checkRight(clickitem.row, clickitem.col);
         const checkBottomResult = this.checkBottom(clickitem.row, clickitem.col);
         const checkLeftResult = this.checkLeft(clickitem.row, clickitem.col);
-        if(checkTopResult || checkRightResult || checkBottomResult || checkLeftResult){
 
-            const clickval = clickitem.value;
-            const emptyItem = this.state.tileArray.filter(item => item.value === 9)[0];
-            const emptyIndex = this.state.tileArray.indexOf(emptyItem);
-            this.state.tileArray[emptyIndex].value = clickval;
+         // Update State
+         this.setState((prestate)=> { 
+            
+            if(checkTopResult || checkRightResult || checkBottomResult || checkLeftResult){
 
-            const itemIndex = this.state.tileArray.indexOf(clickitem);
-            this.state.tileArray[itemIndex].value = 9;
+                // update the value
+                const clickval = clickitem.value;
+                const emptyItem = prestate.tileArray.filter(item => item.value === 9)[0];
+                const emptyIndex = prestate.tileArray.indexOf(emptyItem);
+                prestate.tileArray[emptyIndex].value = clickval;
+    
+                const itemIndex = prestate.tileArray.indexOf(clickitem);
+                prestate.tileArray[itemIndex].value = 9;
+    
+            }
 
-            // Update State
-            this.setState({ tileArray: this.state.tileArray, useStep: (this.state.useStep + 1) });
+            return{
+                tileArray: prestate.tileArray, 
+                useStep: (prestate.useStep + 1)
+            }
 
+        },()=>{
             // check win
             if(this.checkWin()){
                 alert(this.state.userName + ", you win ٩(^ᴗ^)۶");
                 this.endGame();
             }
-        }
+        });
 
     }
 
